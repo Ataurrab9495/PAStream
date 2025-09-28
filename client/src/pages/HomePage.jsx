@@ -23,7 +23,7 @@ const HomePage = () => {
     queryFn: getUserFriends,
   });
 
-  const { data: recommendedUsers = [], isLoading: loadingUsers } = useQuery({
+  const { data: usersData, isLoading: loadingUsers } = useQuery({
     queryKey: ["users"],
     queryFn: getRecommendedUsers,
   });
@@ -39,6 +39,9 @@ const HomePage = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] }),
   });
 
+  // Extract the actual arrays from the API responses
+  const friendsList = friends?.friends || [];
+  const recommendedUsers = usersData?.users || [];
 
   useEffect(() => {
     const outgoingIds = new Set();
@@ -67,11 +70,11 @@ const HomePage = () => {
           <div className="flex justify-center py-12">
             <span className="loading loading-spinner loading-lg" />
           </div>
-        ) : friends.length === 0 ? (
+        ) : friendsList.length === 0 ? (
           <NoFriendsFound />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {friends.map((friend) => (
+            {friendsList.map((friend) => (
               <FriendCard key={friend._id} friend={friend} />
             ))}
           </div>
