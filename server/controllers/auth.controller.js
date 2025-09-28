@@ -58,11 +58,11 @@ export const signup = async (req, res) => {
 
         const token = jwt.sign({
             userId: newUser._id,
-        }, process.env.JWT_SECRET_KEY, {
+        }, process.env.JWT_SECRET, {
             expiresIn: '7d',
         });
 
-        res.cookie("meri-pratyaksha", token, {
+        res.cookie("jwt", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
@@ -116,6 +116,7 @@ export const login = async (req, res) => {
         });
 
         res.cookie("meri-pratyaksha", token, {
+        res.cookie("jwt", token, {
             httpOnly: true, // JS access prevention
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict', // CSRF protection
@@ -139,7 +140,7 @@ export const login = async (req, res) => {
 
 
 export const logout = (req, res) => {
-    res.clearCookie("meri-pratyaksha");
+    res.clearCookie("jwt");
     res.status(200).json({
         success: true,
         message: 'Logout successfully'
@@ -189,7 +190,7 @@ export const onBoard = async (req, res) => {
             });
             log(`User ${updateUser.fullName} synced to Stream`);
         } catch (streamError) {
-            log('Error syncing user to Stream:', streamError);
+            console.log('Error syncing user to Stream:', streamError);
         }
 
 

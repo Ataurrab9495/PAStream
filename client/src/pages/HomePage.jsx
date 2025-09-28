@@ -48,7 +48,7 @@ const HomePage = () => {
   useEffect(() => {
     const outgoingIds = new Set();
     if (outgoingFriendsReqs && outgoingFriendsReqs.length > 0) {
-      outgoingFriendsReqs.forEach((req) => {
+      outgoingFriendsReqs.outgoingFriendReqs?.forEach((req) => {
         outgoingIds.add(req.recipient._id);
       });
 

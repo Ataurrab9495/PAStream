@@ -8,7 +8,7 @@ app.post("/signup", signup);
 app.post("/login", login);
 app.post("/logout", logout);
 
-app.get("/onboarding", authenticate, onBoard);
+app.post("/onboarding", authenticate, onBoard);
 
 // check if user is authenticated
 app.get("/me", authenticate, (req, res) => {
