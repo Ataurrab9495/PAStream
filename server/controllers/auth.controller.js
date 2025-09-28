@@ -116,6 +116,8 @@ export const login = async (req, res) => {
         });
 
         res.cookie("meri-pratyaksha", token, {
+        }
+        )
         res.cookie("jwt", token, {
             httpOnly: true, // JS access prevention
             secure: process.env.NODE_ENV === 'production',

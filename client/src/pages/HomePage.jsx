@@ -7,12 +7,7 @@ import {
   sendFriendRequest,
 } from "../lib/api";
 import { Link } from 'react-router';
-import {
-  CheckCircleIcon,
-  MapPinIcon,
-  UserPlusIcon,
-  UsersIcon
-} from "lucide-react";
+import { CircleCheck as CheckCircleIcon, MapPin as MapPinIcon, UserPlus as UserPlusIcon, Users as UsersIcon } from "lucide-react";
 
 import { capitalize } from "../lib/utils";
 import FriendCard, { getLanguageFlag } from "../components/FriendCard";

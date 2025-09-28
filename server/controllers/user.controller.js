@@ -102,6 +102,8 @@ export const sendFriendRequest = async (req, res) => {
         }
 
         const friendRequest = new FriendRequest.create({
+        }
+        )
         const friendRequest = await FriendRequest.create({
             sender: myId,
             recipient: recipientId,
