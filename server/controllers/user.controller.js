@@ -100,14 +100,7 @@ export const sendFriendRequest = async (req, res) => {
                 message: "A friend request already exists between you and this user."
             })
         }
-<<<<<<< HEAD
         
-=======
-
-        const friendRequest = new FriendRequest.create({
-        }
-        )
->>>>>>> 996c1f672e2e157014032fc0ac431928084bbeb2
         const friendRequest = await FriendRequest.create({
             sender: myId,
             recipient: recipientId,
