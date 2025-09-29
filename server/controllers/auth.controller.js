@@ -58,11 +58,11 @@ export const signup = async (req, res) => {
 
         const token = jwt.sign({
             userId: newUser._id,
-        }, process.env.JWT_SECRET_KEY, {
+        }, process.env.JWT_SECRET, {
             expiresIn: '7d',
         });
 
-        res.cookie("meri-pratyaksha", token, {
+        res.cookie("jwt", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
@@ -95,6 +95,8 @@ export const login = async (req, res) => {
             })
         }
 
+        console.log(email, " ", password);
+        
         const user = await User.findOne({ email }).select('-password');
         if (!user) {
             return res.status(400).json({
@@ -102,7 +104,10 @@ export const login = async (req, res) => {
             })
         }
 
+        console.log("user:- ", user);
+        
         const isMatchPassword = await user.matchPassword(password);
+        
         if (!isMatchPassword) {
             return res.status(400).json({
                 message: 'Invalid email or password.'
@@ -111,11 +116,12 @@ export const login = async (req, res) => {
 
         const token = jwt.sign({
             userId: user._id,
-        }, process.env.JWT_SECRET, {
+        }, process.env.JWT_SECRET, {    
             expiresIn: '7d',
         });
 
-        res.cookie("meri-pratyaksha", token, {
+        
+        res.cookie("jwt", token, {
             httpOnly: true, // JS access prevention
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict', // CSRF protection
@@ -139,7 +145,7 @@ export const login = async (req, res) => {
 
 
 export const logout = (req, res) => {
-    res.clearCookie("meri-pratyaksha");
+    res.clearCookie("jwt");
     res.status(200).json({
         success: true,
         message: 'Logout successfully'
@@ -151,16 +157,16 @@ export const onBoard = async (req, res) => {
     try {
         const userId = req.user._id;
 
-        const { fullName, bio, nativeLanguage, learningLanguage, location } = req.body;
+        const { fullName, bio, location } = req.body;
 
-        if (!fullName || !bio || !nativeLanguage || !learningLanguage || !location) {
+        if (!fullName || !bio ) {
             return res.status(400).json({
                 message: 'All fields are required.',
                 missingFields: [
                     !fullName && 'fullName',
                     !bio && 'bio',
-                    !nativeLanguage && 'nativeLanguage',
-                    !learningLanguage && 'learningLanguage',
+                    /* !nativeLanguage && 'nativeLanguage',
+                    !learningLanguage && 'learningLanguage',*/
                     !location && 'location',
                 ].filter(Boolean),
             });
@@ -187,9 +193,9 @@ export const onBoard = async (req, res) => {
                 name: updateUser.fullName,
                 image: updateUser.profilePic || '',
             });
-            log(`User ${updateUser.fullName} synced to Stream`);
+            console.log(`User ${updateUser.fullName} synced to Stream`);
         } catch (streamError) {
-            log('Error syncing user to Stream:', streamError);
+            console.log('Error syncing user to Stream:', streamError);
         }
 
 

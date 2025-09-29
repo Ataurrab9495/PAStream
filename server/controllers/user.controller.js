@@ -100,8 +100,8 @@ export const sendFriendRequest = async (req, res) => {
                 message: "A friend request already exists between you and this user."
             })
         }
-
-        const friendRequest = new FriendRequest.create({
+        
+        const friendRequest = await FriendRequest.create({
             sender: myId,
             recipient: recipientId,
         });
@@ -189,8 +189,8 @@ export const getFriendRequests = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            incomingRequests: incomingReqs,
-            acceptedRequests: acceptedReqs,
+            incomingReqs: incomingReqs,
+            acceptedReqs: acceptedReqs,
         })
     } catch (error) {
         return res.status(500).json({
@@ -212,7 +212,7 @@ export const getOutgoingFriendReqs = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            outgoindRequests,
+            outgoingFriendReqs: outgoindRequests,
         })
     } catch (error) {
         return res.status(500).json({

@@ -107,9 +107,9 @@ const OnboardingPage = () => {
               />
             </div>
 
-            {/* LANGUAGES */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* NATIVE LANGUAGE */}
+            {/* {/* LANGUAGES */}
+          {/*<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* NATIVE LANGUAGE 
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Native Language</span>
@@ -130,7 +130,7 @@ const OnboardingPage = () => {
               </div>
 
               {/* LEARNING LANGUAGE */}
-              <div className="form-control">
+              {/* <div className="form-control">
                 <label className="label">
                   <span className="label-text">Learning Language</span>
                 </label>
@@ -148,7 +148,7 @@ const OnboardingPage = () => {
                   ))}
                 </select>
               </div>
-            </div>
+            </div> */}
 
             {/* LOCATION */}
             <div className="form-control">

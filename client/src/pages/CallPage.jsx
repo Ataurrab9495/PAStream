@@ -15,7 +15,7 @@ import {
   useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 
-import "@stream-io/video-react-sdk/dist/css/style.css";
+import "@stream-io/video-react-sdk/dist/css/styles.css";
 import toast from "react-hot-toast";
 import PageLoader from "../components/PageLoader";
 
