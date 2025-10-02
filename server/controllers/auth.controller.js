@@ -168,8 +168,6 @@ export const onBoard = async (req, res) => {
                 missingFields: [
                     !fullName && 'fullName',
                     !bio && 'bio',
-                    /* !nativeLanguage && 'nativeLanguage',
-                    !learningLanguage && 'learningLanguage',*/
                     !location && 'location',
                 ].filter(Boolean),
             });

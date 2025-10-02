@@ -33,7 +33,7 @@ export const getMyFriends = async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
             .select("friends")
-            .populate("friends", "fullName profilePic nativeLanguage learningLanguage");
+            .populate("friends", "fullName profilePic");
 
 
         if (!user) {
@@ -180,7 +180,7 @@ export const getFriendRequests = async (req, res) => {
         const incomingReqs = await FriendRequest.find({
             recipient: req.user._id,
             status: "pending"
-        }).populate("sender", "fullName profilePic nativeLanguage learningLanguage");
+        }).populate("sender", "fullName profilePic");
 
         const acceptedReqs = await FriendRequest.find({
             sender: req.user._id,
@@ -208,7 +208,7 @@ export const getOutgoingFriendReqs = async (req, res) => {
         const outgoindRequests = await FriendRequest.find({
             sender: req.user._id,
             status: "pending",
-        }).populate("recipient", "fullName profilePic nativeLanguage learningLanguage");
+        }).populate("recipient", "fullName profilePic");
 
         return res.status(200).json({
             success: true,
