@@ -68,3 +68,9 @@ export const getStreamToken = async() => {
     const res = await axiosInstance.get("/chat/token");
     return res.data;
 };
+
+// user data update
+export const updateUser = async(data) => {
+    const res = await axiosInstance.put("/update-userdata", data);
+    return res.data;
+}

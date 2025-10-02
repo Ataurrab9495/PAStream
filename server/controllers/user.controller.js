@@ -100,7 +100,7 @@ export const sendFriendRequest = async (req, res) => {
                 message: "A friend request already exists between you and this user."
             })
         }
-        
+
         const friendRequest = await FriendRequest.create({
             sender: myId,
             recipient: recipientId,
@@ -213,6 +213,30 @@ export const getOutgoingFriendReqs = async (req, res) => {
         return res.status(200).json({
             success: true,
             outgoingFriendReqs: outgoindRequests,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: 'Server error. Please try again later.',
+            error,
+        })
+    }
+};
+
+
+export const updateUser = async (req, res) => {
+    try {
+        const { bio } = req.body;
+
+        const user = User.findByIdAndUpdate(req.user._id,
+            { bio },
+            { new: true }
+        )
+
+        return res.status(200).json({
+            success: true,
+            user,
+            message: "Data has been updated Successfully!!"
         })
     } catch (error) {
         return res.status(500).json({

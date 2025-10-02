@@ -44,7 +44,7 @@ const LoginPage = () => {
             <form onSubmit={handleLogin}>
               <div className="space-y-4">
                 <div>
-                  <h2 className="text-xl font-semibold">Welcome Bachaa</h2>
+                  <h2 className="text-xl font-semibold">Welcome user</h2>
                   <p className="text-sm opacity-70">
                     Sign in to your account to continue your journey with My Master
                   </p>
@@ -59,7 +59,7 @@ const LoginPage = () => {
                     </label>
                     <input
                       type="email"
-                      placeholder='Enter your Email bachaa'
+                      placeholder='Enter your Email'
                       className="input input-boarded w-full"
                       value={loginData.email}
                       onChange={(e) => setLoginData({...loginData, email: e.target.value})}
