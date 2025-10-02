@@ -97,12 +97,14 @@ export const login = async (req, res) => {
 
         console.log(email, " ", password);
         
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({
                 message: 'Invalid email or password.'
             })
         }
+
+        console.log("user:- ", user);
         
         const isMatchPassword = await user.matchPassword(password);
         
@@ -126,17 +128,20 @@ export const login = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
+        // Remove password from response
+        const userResponse = user.toObject();
+        delete userResponse.password;
         res.status(200).json({
             success: true,
             message: 'Login successful.',
-            user,
+            user: userResponse,
         });
 
     } catch (error) {
         res.status(500).json({
             success: false,
             message: 'Server error. Please try again later.',
-            error,
+            error: error.message,
         })
     }
 };
