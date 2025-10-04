@@ -17,6 +17,7 @@ const Onboarding = React.lazy(() => import('./pages/Onboarding'));
 const Notifications = React.lazy(() => import('./pages/NotificationsPage'));
 const Chat = React.lazy(() => import('./pages/ChatPage'));
 const Call = React.lazy(() => import('./pages/CallPage'));
+const Friends = React.lazy(() => import('./pages/Friends'));
 
 const App = () => {
     const { isLoading, authUser } = useAuthUser();
@@ -96,6 +97,18 @@ const App = () => {
                                 <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
                             )
                         }
+                    />
+                    <Route
+                        path="/friends"
+                        element={
+                            isAuthenticated && isOnboarded ? (
+                                <Layout showSidebar={true}>
+                                    <Friends />
+                                </Layout>
+                            ) : (
+                                <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+                            )
+                        }   
                     />
 
                     <Route
