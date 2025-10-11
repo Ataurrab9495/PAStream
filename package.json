@@ -1,5 +1,5 @@
 {
-  "name": "chat-app-monorepo",
+  "name": "PAStream",
   "version": "1.0.0",
   "description": "Full-stack chat application with video calling",
   "private": true,
