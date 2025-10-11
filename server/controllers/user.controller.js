@@ -226,23 +226,38 @@ export const getOutgoingFriendReqs = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const { bio } = req.body;
+        const { fullName, bio, location } = req.body;
 
-        const user = User.findByIdAndUpdate(req.user._id,
-            { bio },
-            { new: true }
-        )
+        // Only allow specific fields to be updated
+        const updates = {};
+        if (typeof fullName !== 'undefined') updates.fullName = fullName;
+        if (typeof bio !== 'undefined') updates.bio = bio;
+        if (typeof location !== 'undefined') updates.location = location;
+
+        if (Object.keys(updates).length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No valid fields provided to update.'
+            });
+        }
+
+        // Await the update so we return the updated document
+        const user = await User.findByIdAndUpdate(req.user._id, updates, { new: true });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found.' });
+        }
 
         return res.status(200).json({
             success: true,
             user,
-            message: "Data has been updated Successfully!!"
-        })
+            message: 'Data has been updated successfully.'
+        });
     } catch (error) {
+        console.error('updateUser error:', error);
         return res.status(500).json({
             success: false,
             message: 'Server error. Please try again later.',
-            error,
-        })
+        });
     }
 };

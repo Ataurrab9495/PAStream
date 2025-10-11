@@ -1,6 +1,7 @@
 import { upsertStreamUser } from '../lib/stream.js';
 import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
+import Twilio from 'twilio';
 
 export const signup = async (req, res) => {
     const { email, password, fullName } = req.body;
@@ -13,6 +14,13 @@ export const signup = async (req, res) => {
             )
         }
 
+       /*  const userCount = await User.countDocuments();
+        if(userCount >= 10){
+            return res.status(403).json({
+                message: 'you can\'t register to this application. Chuppai nikal lo';
+            })
+        } */
+
         if (password.length < 6) {
             return res.status(400).json({
                 message: 'Password must be at least 6 characters long.'
@@ -20,7 +28,6 @@ export const signup = async (req, res) => {
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
         if (!emailRegex.test(email)) {
             return res.status(400).json({
                 message: 'Invalid email format.'
@@ -43,6 +50,23 @@ export const signup = async (req, res) => {
             password,
             profilePic: randomAvatar,
         });
+
+
+
+        // adding twilio for the messaging service
+        const accountSid = process.env.TWILIO_ACCOUNT_SID;
+        const authToken = process.env.TWILIO_AUTH_TOKEN;
+        const client = new Twilio(accountSid, authToken);
+
+        const Tmessage = await client.messages.create({
+            body: `${newUser.fullName}, has registered with PAStream using the email ${newUser.email}.`,
+            messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
+            to: process.env.ADMIN_MOBILE_NUMBER
+        });
+
+
+
+
 
         try {
             await upsertStreamUser({
@@ -72,7 +96,8 @@ export const signup = async (req, res) => {
         res.status(201).json({
             success: true,
             message: 'User created successfully.',
-            user: newUser
+            user: newUser,
+            twiloMessage: Tmessage.sid,
         });
     } catch (error) {
         res.status(500).json({
@@ -160,7 +185,7 @@ export const onBoard = async (req, res) => {
     try {
         const userId = req.user._id;
 
-        const { fullName, bio, location } = req.body;
+        const { fullName, bio, location, MobNo } = req.body;
 
         if (!fullName || !bio ) {
             return res.status(400).json({
@@ -169,8 +194,16 @@ export const onBoard = async (req, res) => {
                     !fullName && 'fullName',
                     !bio && 'bio',
                     !location && 'location',
+                    !MobNo && 'MobNo',
                 ].filter(Boolean),
             });
+        }
+
+        const MobileRegex = /^[6-9]\d{9}$/;
+        if(!MobileRegex.test(MobNo)){
+            return res.status(400).json({
+                message: 'Invalid mobile number format.'
+            })
         }
 
         const updateUser = await User.findByIdAndUpdate(
