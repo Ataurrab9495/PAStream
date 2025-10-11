@@ -1,0 +1,26 @@
+node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+README.md
+.vscode
+.idea
+*.log
+dist
+build
+coverage
+.DS_Store
+
+# Client specific
+client/node_modules
+client/dist
+client/.env.local
+client/.env.development
+client/.env.production
+
+# Server specific
+server/node_modules
+server/.env.local
+server/.env.development
+server/.env.production

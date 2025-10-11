@@ -70,7 +70,7 @@ export const getStreamToken = async() => {
 };
 
 // user data update
-export const updateUser = async(data) => {
-    const res = await axiosInstance.put("/update-userdata", data);
+export const updateUserData = async(data) => {
+    const res = await axiosInstance.put("/users/update-userdata", data);
     return res.data;
 }

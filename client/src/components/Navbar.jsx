@@ -3,18 +3,26 @@ import useAuthUser from "../hooks/useAuthUser";
 import { BellIcon, LogOutIcon, ShipWheelIcon } from "lucide-react";
 import ThemeSelector from "./ThemeSelector";
 import useLogout from "../hooks/useLogout";
+import ProfileModal from "./ProfileModal";
+import { useState } from "react";
+import useUpdateUserData from "../hooks/useUpdateUserData";
 
 const Navbar = () => {
   const { authUser } = useAuthUser();
   const location = useLocation();
   const isChatPage = location.pathname?.startsWith("/chat");
 
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
   const { logoutMutation } = useLogout();
+
+  // use the update hook correctly (no args) and get the updateProfile function + pending state
+  const { isPending, updateProfile } = useUpdateUserData();
 
   return (
     <nav className="bg-base-200 border-b border-base-300 sticky top-0 z-30 h-16 flex items-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-end w-full">
+        <div className="flex items-center justify-end w-full gap-3">
           {/* LOGO - ONLY IN THE CHAT PAGE */}
           {isChatPage && (
             <div className="pl-5">
@@ -38,9 +46,13 @@ const Navbar = () => {
           {/* TODO */}
           <ThemeSelector />
 
-          <div className="avatar">
-            <div className="w-9 rounded-full">
-              <img src={authUser?.profilePic} alt="User Avatar" rel="noreferrer" />
+          <div
+            className="avatar cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => setIsProfileModalOpen(prev => !prev)}
+            title="Edit Profile"
+          >
+            <div className="w-9 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+              <img src={authUser?.profilePic} alt="User Avatar" />
             </div>
           </div>
 
@@ -50,6 +62,14 @@ const Navbar = () => {
           </button>
         </div>
       </div>
+      {/* Profile Modal */}
+      {isProfileModalOpen && <ProfileModal
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+        userData={authUser}
+        onSave={(data) => updateProfile(data, { onSuccess: () => setIsProfileModalOpen(false) })}
+        isPending={isPending}
+      />}
     </nav>
   );
 };

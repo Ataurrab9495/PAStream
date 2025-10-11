@@ -8,13 +8,14 @@ import { LANGUAGES } from "../constants";
 
 const OnboardingPage = () => {
   const { authUser } = useAuthUser();
+  console.log(authUser);
+  
   const queryClient = useQueryClient();
 
   const [formState, setFormState] = useState({
     fullName: authUser?.fullName || "",
     bio: authUser?.bio || "",
-    nativeLanguage: authUser?.nativeLanguage || "",
-    learningLanguage: authUser?.learningLanguage || "",
+    MobNo: authUser?.MobNo || "",
     location: authUser?.location || "",
     profilePic: authUser?.profilePic || "",
   });
@@ -103,7 +104,22 @@ const OnboardingPage = () => {
                 value={formState.bio}
                 onChange={(e) => setFormState({ ...formState, bio: e.target.value })}
                 className="textarea textarea-bordered h-24"
-                placeholder="Tell others about yourself and your language learning goals"
+                placeholder="Mst bio likh do yaar..."
+              />
+            </div>
+
+            {/* MOB NUMBER */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Mob no:- </span>
+              </label>
+              <input
+                type="text"
+                name="MobNo"
+                value={formState.MobNo}
+                onChange={(e) => setFormState({ ...formState, MobNo: e.target.value })}
+                className="input input-bordered w-full"
+                placeholder="Enter your mobile number"
               />
             </div>
 

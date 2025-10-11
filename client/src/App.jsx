@@ -9,6 +9,7 @@ import Layout from './components/Layout';
 import PageLoader from './components/PageLoader';
 import useAuthUser from './hooks/useAuthUser';
 import { useThemeStore } from './store/useThemeStore';
+import ProfileModal from './components/ProfileModal';
 
 const Home = React.lazy(() => import('./pages/HomePage'));
 const SingUp = React.lazy(() => import('./pages/SignUpPage'));
@@ -28,8 +29,8 @@ const App = () => {
 
     if (isLoading) return <PageLoader />;
 
-   /*  const isAuthenticated = true;
-    const isOnboarded = true; */
+    /*  const isAuthenticated = true;
+     const isOnboarded = true; */
 
     return (
         <div className="h-screen" data-theme={theme}>
@@ -108,9 +109,17 @@ const App = () => {
                             ) : (
                                 <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
                             )
-                        }   
+                        }
                     />
-
+                    <Route
+                        path="/profile/:id"
+                        element={
+                            isAuthenticated && isOnboarded ? (
+                                <ProfileModal />
+                            ) : (
+                                <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+                            )}
+                    />
                     <Route
                         path="/onboarding"
                         element={
