@@ -21,7 +21,6 @@ const allowedOrigins = [
     process.env.CLIENT_URL
 ].filter(Boolean);
 
-
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
@@ -47,10 +46,10 @@ app.use("/v1/api/chat", chatRoutes);
 
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, "../frontend/dist")));
+    app.use(express.static(path.join(__dirname, "client/dist")));
 
     app.get("*", (req, res) => {
-        res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+        res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
     });
 }
 

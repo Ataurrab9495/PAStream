@@ -24,7 +24,5 @@ services:
         sync: false
       - key: TWILIO_PHONE_NUMBER
         sync: false
-      - key: VITE_SUPABASE_URL
-        sync: false
-      - key: VITE_SUPABASE_SUPABASE_ANON_KEY
+      - key: CLIENT_URL
         sync: false
