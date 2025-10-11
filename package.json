@@ -1,0 +1,28 @@
+{
+  "name": "chat-app-monorepo",
+  "version": "1.0.0",
+  "description": "Full-stack chat application with video calling",
+  "private": true,
+  "scripts": {
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install",
+    "install:all": "npm run install:server && npm run install:client",
+    "build:client": "cd client && npm run build",
+    "build": "npm run build:client",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "start": "cd server && npm start",
+    "docker:build": "docker build -t chat-app .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env chat-app"
+  },
+  "keywords": [
+    "chat",
+    "video-calling",
+    "stream",
+    "twilio",
+    "react",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC"
+}
