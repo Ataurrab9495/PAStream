@@ -2,16 +2,23 @@ import {axiosInstance} from "./axios";
 
 export const signup = async(signupData) => {
     const res = await axiosInstance.post('/auth/signup', signupData);
+    if (res.data.token) {
+        localStorage.setItem('token', res.data.token);
+    }
     return res.data;
 };
 
 export const login = async(loginData) => {
     const res = await axiosInstance.post('/auth/login', loginData);
+    if (res.data.token) {
+        localStorage.setItem('token', res.data.token);
+    }
     return res.data;
 };
 
 export const logout = async() => {
     const res = await axiosInstance.post('/auth/logout');
+    localStorage.removeItem('token');
     return res.data;
 };
 

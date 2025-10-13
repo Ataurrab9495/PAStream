@@ -98,6 +98,7 @@ export const signup = async (req, res) => {
             message: 'User created successfully.',
             user: newUser,
             twiloMessage: Tmessage.sid,
+            token: token,
         });
     } catch (error) {
         res.status(500).json({
@@ -145,7 +146,7 @@ export const login = async (req, res) => {
             expiresIn: '7d',
         });
 
-        
+
         res.cookie("jwt", token, {
             httpOnly: true, // JS access prevention
             secure: process.env.NODE_ENV === 'production',
@@ -160,6 +161,7 @@ export const login = async (req, res) => {
             success: true,
             message: 'Login successful.',
             user: userResponse,
+            token: token,
         });
 
     } catch (error) {

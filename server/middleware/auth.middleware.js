@@ -3,7 +3,20 @@ import User from '../models/user.model.js';
 
 export const authenticate = async (req, res, next) => {
     try {
-        const token = req.cookies.jwt;
+        // Check both Authorization header and cookies for token
+        let token = null;
+
+        // First check Authorization header (for cross-origin requests)
+        const authHeader = req.headers.authorization;
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            token = authHeader.substring(7);
+        }
+
+        // Fallback to cookies (for same-origin requests)
+        if (!token) {
+            token = req.cookies.jwt;
+        }
+
         if (!token) {
             return res.status(401).json({
                 message: "bachaaa... you are not authenticated to access this route"
