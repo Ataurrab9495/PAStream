@@ -48,7 +48,7 @@ const SignUpPage = () => {
                 <div>
                   <h2 className="text-xl font-semibold">Create an Account</h2>
                   <p className="text-sm opacity-70">
-                    Experience the premium chat App
+                    Experience the premium chat App with Md Ataurrab
                   </p>
                 </div>
 

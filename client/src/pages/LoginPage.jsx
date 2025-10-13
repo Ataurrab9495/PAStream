@@ -46,7 +46,7 @@ const LoginPage = () => {
                 <div>
                   <h2 className="text-xl font-semibold">Welcome user</h2>
                   <p className="text-sm opacity-70">
-                    Sign in to your account to continue your journey with My Master
+                    Sign in to your account to continue your journey with My Master ( Md Ataurrab )
                   </p>
                 </div>
 
