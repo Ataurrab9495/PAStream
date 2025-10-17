@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useThemeStore } from '../store/useThemeStore'
 import { THEMES } from '../constants'
-import { Check, X } from 'lucide-react';
+import { Check, X, Mail, MapPin, Calendar, User as UserIcon } from 'lucide-react';
 import moment from 'moment';
 import { getOutgoingFriendReqs, getUserFriends } from '../lib/api';
 import { useQuery } from '@tanstack/react-query';
 
 const Friends = () => {
     const [activeTab, setActiveTab] = useState('friends');
+    const [selectedFriend, setSelectedFriend] = useState(null);
 
 
     const themeName = useThemeStore((s) => s.theme);
@@ -131,6 +132,7 @@ const Friends = () => {
                                         border: `1px solid ${themeDef?.colors?.[1]}`,
                                         background: 'transparent',
                                     }}
+                                    onClick={() => setSelectedFriend(friend)}
                                 >
                                     View Profile
                                 </button>
@@ -165,6 +167,121 @@ const Friends = () => {
                     </div>
                 )}
             </div>
+
+            {/* Profile Modal */}
+            {selectedFriend && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+                    onClick={() => setSelectedFriend(null)}
+                >
+                    <div
+                        className="bg-base-100 rounded-2xl max-w-md w-full shadow-2xl overflow-hidden"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Header with gradient background */}
+                        <div
+                            className="relative h-32 flex items-center justify-center"
+                            style={{
+                                background: `linear-gradient(135deg, ${accent}, ${themeDef?.colors?.[2] || '#8b5cf6'})`,
+                            }}
+                        >
+                            <button
+                                onClick={() => setSelectedFriend(null)}
+                                className="absolute top-4 right-4 btn btn-sm btn-circle btn-ghost text-white hover:bg-white hover:bg-opacity-20"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        {/* Profile Picture */}
+                        <div className="flex justify-center -mt-16 mb-4">
+                            <div className="w-32 h-32 rounded-full border-4 border-base-100 overflow-hidden shadow-xl">
+                                <img
+                                    src={selectedFriend.profilePic}
+                                    alt={selectedFriend.fullName}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Profile Details */}
+                        <div className="px-6 pb-6 space-y-4">
+                            <div className="text-center">
+                                <h2 className="text-2xl font-bold">{selectedFriend.fullName}</h2>
+                            </div>
+
+                            <div className="divider my-2"></div>
+
+                            {/* Info Grid */}
+                            <div className="space-y-3">
+                                {selectedFriend.bio && (
+                                    <div className="flex items-start gap-3 p-3 rounded-lg bg-base-200">
+                                        <UserIcon className="w-5 h-5 mt-0.5 opacity-70 flex-shrink-0" />
+                                        <div className="flex-1">
+                                            <p className="text-sm font-medium opacity-70 mb-1">Bio</p>
+                                            <p className="text-sm">{selectedFriend.bio}</p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {selectedFriend.email && (
+                                    <div className="flex items-center gap-3 p-3 rounded-lg bg-base-200">
+                                        <Mail className="w-5 h-5 opacity-70 flex-shrink-0" />
+                                        <div className="flex-1">
+                                            <p className="text-sm font-medium opacity-70 mb-1">Email</p>
+                                            <p className="text-sm break-all">{selectedFriend.email}</p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {selectedFriend.MobNo && (
+                                    <div className="flex items-center gap-3 p-3 rounded-lg bg-base-200">
+                                        <div className="w-5 h-5 opacity-70 flex-shrink-0 flex items-center justify-center">
+                                            <span className="text-lg">📱</span>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="text-sm font-medium opacity-70 mb-1">Mobile Number</p>
+                                            <p className="text-sm">{selectedFriend.MobNo}</p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {selectedFriend.location && (
+                                    <div className="flex items-center gap-3 p-3 rounded-lg bg-base-200">
+                                        <MapPin className="w-5 h-5 opacity-70 flex-shrink-0" />
+                                        <div className="flex-1">
+                                            <p className="text-sm font-medium opacity-70 mb-1">Location</p>
+                                            <p className="text-sm">{selectedFriend.location}</p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="flex items-center gap-3 p-3 rounded-lg bg-base-200">
+                                    <Calendar className="w-5 h-5 opacity-70 flex-shrink-0" />
+                                    <div className="flex-1">
+                                        <p className="text-sm font-medium opacity-70 mb-1">Joined</p>
+                                        <p className="text-sm">{moment(selectedFriend.createdAt).format('MMMM YYYY')}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-2">
+                                <button
+                                    className="btn btn-block"
+                                    style={{
+                                        backgroundColor: accent,
+                                        color: activeTextColor,
+                                        border: 'none'
+                                    }}
+                                    onClick={() => setSelectedFriend(null)}
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
