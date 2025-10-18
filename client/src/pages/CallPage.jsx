@@ -77,8 +77,8 @@ const CallPage = () => {
 
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
-      <div className="relative">
+    <div className="h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+      <div className="relative w-full h-full">
         {client && call ? (
           <StreamVideo client={client}>
             <StreamCall call={call}>
@@ -86,8 +86,8 @@ const CallPage = () => {
             </StreamCall>
           </StreamVideo>
         ):(
-          <div className="flex items-center justify-center h-full">
-            <p>Could not initialize call. Please refresh or try again later.</p>
+          <div className="flex items-center justify-center h-full px-4">
+            <p className="text-center">Could not initialize call. Please refresh or try again later.</p>
           </div>
         )}
       </div>
